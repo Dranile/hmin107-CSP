@@ -39,12 +39,22 @@ public class Application{
 //		System.out.println(r);
 		
 		KnowledgeBase kb = new KnowledgeBase("exemple/premierTest.txt");
-		System.out.println(kb);
                 
-                System.out.println("\n-------------------- RESULTATS DE LA SATURATION ----------------------\n");
                 
-                kb.saturerFaits();
-                System.out.println(kb);
+                //Le loup mange-t'il la chèvre ?
+                kb.requete("Mange('loups','chevre')");
+                
+                //Quels sont les animaux cruels ?
+                kb.requete("Animal(x);Cruel(x)");
+                
+                //Quels sont les animaux cruels et que mangent-t'ils ?
+                kb.requete("Animal(x);Cruel(x);Mange(x,y)");
+                
+                //Quels sont les animaux qui consomment la chèvre ?
+                kb.requete("Animal(x);Consomme(x,'chevre')");
+                
+                //Que consomme la chevre ?
+                kb.requete("Consomme('chevre',x)");
 
 
 	}

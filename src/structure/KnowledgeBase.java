@@ -149,9 +149,20 @@ public class KnowledgeBase {
 	}
         
         public String requete(String str){
-            if(!sature)
+            if(!sature){
                 saturerFaits();
+                System.out.println(bf);
+            }            
             
+            System.out.println("----------------- Requete : " + str + "------------------------");
+            
+            ArrayList<Atom> Q = Homomorphisms.changeStrToListAtom(str);
+            
+            Object obj = bf.requete(Q);
+            
+            System.out.println(obj);
+            
+            //System.out.println(h);
             // maintenant il faut s'occuper de la requete.
             return null;
         }

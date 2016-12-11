@@ -99,14 +99,24 @@ public class FactBase {
 		String predicat = a.getPredicate();
 		// recupere la liste de terme concernant le predicat de a
 		ArrayList<ArrayList<Term>>  liste = atoms.get(predicat);
+
                 if(liste == null){
                     return false;
                 }
 		// pour chaque liste de terme, on regarde si la liste est pareil que a, si oui alors true
 		for(int i = 0; i<liste.size();i++){
-			if(liste.get(i).equals(a.getArgs())){
-				return true;
-			}
+                        boolean ok = true;
+                        
+                        ArrayList<Term> args = a.getArgs();
+                        for(int j = 0; j<liste.get(i).size();j++){
+                            if(!liste.get(i).get(j).equalsT(args.get(j))){
+				ok = false;
+                            }
+                        }
+                        if(ok){
+                            return true;
+                        }
+			
 		}
 		return false;
 		
@@ -115,15 +125,31 @@ public class FactBase {
         public Object requete(ArrayList<Atom> Q){
             //Quand on a une requete avec 0 variables, on repond oui ou non
             //Quand on a une requete avec 1-n variables, il faut répondre les valeurs des variables
-            // C'est l'algorithme de BC
-            return null;
-        }
-        
-        private ArrayList<Atom> BC(ArrayList<Atom> Q, ArrayList<Atom>  sf){
-            ArrayList<Atom> reponse = new ArrayList<>();
-            if(Q == null){
-                reponse = sf;
+            
+            // Premierement, on regarde si Q est une liste d'atome sans variables
+            boolean reponseBooleen = true;
+            for(int i = 0; i< Q.size();i++){
+                ArrayList<Term> termes = Q.get(i).getArgs();
+                for(int j = 0; j<termes.size();j++){
+                    if(termes.get(j).isVariable()){
+                        reponseBooleen = false;
+                    }
+                }
             }
-            return null;
+            
+            // Si Oui, on regarde si la requete est vrai ou faux
+            if(reponseBooleen){
+                for(int i = 0; i<Q.size();i++){
+                    if(!this.contains(Q.get(i))){;
+                        return false;
+                    }
+                }
+                return true;
+            }
+            // Sinon, c'est un requete, il faut utiliser un homomorphisme (Actuel probleme, certaines requetes ont des constantes)
+            else{
+                Homomorphisms h = new Homomorphisms(Q, this);
+                return h.homoQ;
+            }
         }
 }

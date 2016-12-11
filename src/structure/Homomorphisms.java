@@ -14,7 +14,7 @@ public class Homomorphisms {
 	public Homomorphisms(String q, FactBase b){
 		Q = changeStrToListAtom(q);
 		bf = b;
-        homoQ = BacktrackAll();
+                homoQ = BacktrackAll();
 	}
 	
 	public Homomorphisms(ArrayList<Atom> q, FactBase b){
@@ -24,7 +24,7 @@ public class Homomorphisms {
 		//il faut faire les homomorphismes de q dans bf
 	}
 	
-	private ArrayList<Atom> changeStrToListAtom(String str){
+	public static ArrayList<Atom> changeStrToListAtom(String str){
 		StringTokenizer st = new StringTokenizer(str,";");
 		ArrayList<Atom> at = new ArrayList<Atom>();
 		while(st.hasMoreTokens()){
@@ -49,6 +49,10 @@ public class Homomorphisms {
 					}
                                     }
 				}
+                                else {
+                                    reseau.addVariable(terme.getLabel());
+                                    reseau.addValue(terme.getLabel(), terme);
+				}
 			}
 		}
 		for(int i = 0; i<Q.size();i++){
@@ -61,6 +65,7 @@ public class Homomorphisms {
 			}
 			Constraint c = null;
 			try {
+                                //System.out.println(variables);
 				// le deuxieme argument, va recupérer dans le hmap les listes des constantes
 				c = new ConstraintExt(variables, bf.getAtomPred(Q.get(i).getPredicate()));
 			} catch (Exception ex) {
@@ -76,6 +81,7 @@ public class Homomorphisms {
         
         public ArrayList<Assignation> BacktrackAll(){
             Reseau reseau = this.changeToReseau();
+            //System.out.println(reseau);
             CSP resultat = new CSP(reseau);
             return resultat.searchAllSolutions();
         }
