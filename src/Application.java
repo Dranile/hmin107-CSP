@@ -3,6 +3,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import csp.*;
+import java.util.Scanner;
 import structure.*;
 
 public class Application{
@@ -38,6 +39,7 @@ public class Application{
 //		Rule r = new Rule("p(x,y);p(y,z);p(x,z)");
 //		System.out.println(r);
 		
+            /*
 		KnowledgeBase kb = new KnowledgeBase("exemple/premierTest.txt");
                 
                 
@@ -55,6 +57,23 @@ public class Application{
                 
                 //Que consomme la chevre ?
                 kb.requete("Consomme('chevre',x)");
+                
+                */
+            
+                Scanner sc = new Scanner(System.in);
+                System.out.println("Rentrez le nom du fichier à charger :");
+                String str = sc.nextLine();
+                KnowledgeBase kb = new KnowledgeBase(str);
+                
+                str = "";
+                
+                while(!str.equals("exit")){
+                    System.out.println("Veuillez rentrer une requête :");
+                    str = sc.nextLine();
+                    kb.requete(str);
+                }
+                
+                System.out.println("Bonne journée :)");
 
 
 	}
