@@ -1,0 +1,11 @@
+2
+Animal('chevre');Herbivore('chevre')
+Animal('loups');Cruel('loups')
+7
+Animal(x);Cruel(x);Carnivore(x)
+Animal(x);Herbivore(x);Mange(x,'herbe')
+Animal(x);Carnivore(x);Herbivore(y);Mange(x,y)
+Animal(x);Carnivore(x);Boire(x,'eau')
+Animal(x);Herbivore(x);Boire(x,'eau')
+Animal(x);Boire(x,y);Consomme(x,y)
+Animal(x);Mange(x,y);Consomme(x,y)
