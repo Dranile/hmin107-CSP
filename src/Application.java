@@ -8,73 +8,89 @@ import structure.*;
 
 public class Application{
 	public static void main(String [] args) throws Exception{
-		//String nomF = "premierCSP.txt";
-		//String nomF = "deuxiemeCSP.txt";
-		//String nomF = "troisiemeCSP.txt";
-		//String nomF = "CSP/example.txt";
-		//String nomF = "sudoku4x4.txt";
-		//String nomF = "CSPTestIntention.txt";
-		//System.out.println("Chargement du fichier : " + new java.io.File(".").getCanonicalPath() + "/" + nomF);
-		//BufferedReader lectureF = new BufferedReader(new FileReader(nomF));
-		//Reseau monCSP = new Reseau(lectureF);
-		//System.out.println("\nMon réseau de contraintes :\n" + monCSP);
-		//				
-		//CSP res = new CSP(monCSP);
-		//		
-		// res.searchSolution();
-		//		
+		
+		/**
+		 * Pour résoudre un problème à base de contrainte
+		 */
+
+		String nomF = "example/contrainte/sudoku4x4.txt";
+		System.out.println("Chargement du fichier : " + new java.io.File(".").getCanonicalPath() + "/" + nomF);
+		BufferedReader lectureF = new BufferedReader(new FileReader(nomF));
+		Reseau monCSP = new Reseau(lectureF);
+		System.out.println("\nMon réseau de contraintes :\n" + monCSP);
+		
+		CSP res = new CSP(monCSP);
+		res.searchSolution();		
 		//res.searchAllSolutions();
 
-		//System.out.println("Creation d'un factBase");
-		//FactBase f = new FactBase("p('a','b');q('a',b','c');p('b','c');q('b','c','c')");
-		//System.out.println(f.toString());
-		//Homomorphisms h = new Homomorphisms("p(x,y);q(x,y,z)", f);
-
-//		FactBase f = new FactBase("p('a','b');q('b','a');p('b','c');q('b','c')");
-//		Homomorphisms h = new Homomorphisms("p(x,y);q(y,z)", f);
-//		System.out.println(h);
-//
-//
-//
-//		Rule r = new Rule("p(x,y);p(y,z);p(x,z)");
-//		System.out.println(r);
 		
-            /*
-		KnowledgeBase kb = new KnowledgeBase("exemple/premierTest.txt");
-                
-                
-                //Le loup mange-t'il la chèvre ?
-                kb.requete("Mange('loups','chevre')");
-                
-                //Quels sont les animaux cruels ?
-                kb.requete("Animal(x);Cruel(x)");
-                
-                //Quels sont les animaux cruels et que mangent-t'ils ?
-                kb.requete("Animal(x);Cruel(x);Mange(x,y)");
-                
-                //Quels sont les animaux qui consomment la chèvre ?
-                kb.requete("Animal(x);Consomme(x,'chevre')");
-                
-                //Que consomme la chevre ?
-                kb.requete("Consomme('chevre',x)");
-                
-                */
-            
-                Scanner sc = new Scanner(System.in);
-                System.out.println("Rentrez le nom du fichier à charger :");
-                String str = sc.nextLine();
-                KnowledgeBase kb = new KnowledgeBase(str);
-                
-                str = "";
-                
-                while(!str.equals("exit")){
-                    System.out.println("Veuillez rentrer une requête :");
-                    str = sc.nextLine();
-                    kb.requete(str);
-                }
-                
-                System.out.println("Bonne journée :)");
+		/**
+		 * Pour résoudre un problème à base de règles : 
+		 */
+		
+		/*
+		
+		Scanner sc = new Scanner(System.in);
+		System.out.println("Rentrez le nom du fichier à charger :");
+		String str = sc.nextLine();
+		KnowledgeBase kb = new KnowledgeBase(str);
 
+		str = "";
 
+		while(!str.equals("exit")){
+			System.out.println("Veuillez rentrer une requête :");
+			str = sc.nextLine();
+			kb.requete(str);
+		}
+		
+		sc.close();
+		System.out.println("Bonne journée :)");
+		
+		*/
+		
+		KnowledgeBase kb = new KnowledgeBase("example/regle/annexe.txt");
+		System.out.println("Affichage de la base de connaissance annexe: ");
+		System.out.println(kb);
+		
+		System.out.println("Saturation de la base :");
+		kb.saturerFaits();
+		
+		System.out.println("Affichage de la base de connaissance saturé");
+		System.out.println(kb);
+		
+		System.out.println("\nQuels sont les animaux qui boivent quelque chose ?");
+		kb.requete("Animal(x);Boire(x,y)");
+		
+		System.out.println("\nQuels sont les animaux qui consomment de l'eau ?");
+		kb.requete("Animal(x);Consomme(x,'eau')");
+		
+		System.out.println("\nQuels sont les animaux carnivores qui mangent un herbivore ?");
+		kb.requete("Animal(x);Carnivore(x);Animal(y);Herbivore(y);Mange(x,y)");
+		
+		System.out.println("\nQuels sont les animaux herbivores qui mangent un carnivore ?");
+		kb.requete("Animal(x);Herbivore(x);Animal(y);Carnivore(y);Mange(x,y)");
+		
+		
+		/*
+		KnowledgeBase kb = new KnowledgeBase("example/regle/oedipe.txt");
+		System.out.println(kb);
+		
+		System.out.println("Saturation de la base :");
+		kb.saturerFaits();
+		
+		System.out.println("Affichage de la base de connaissance saturé");
+		System.out.println(kb);
+		
+		System.out.println("\nTrouver tous les x et y tel que : aMere(x,y);h(x) ?");
+		kb.requete("aMere(x,y);h(x)");
+		
+		System.out.println("\nTrouver tous les x et y tel que : aMere(x,y);traumatise(x);f(x) ?");
+		kb.requete("aMere(x,y);traumatise(x);f(x)");
+		
+		System.out.println("\nA-t-on traumatise('A') ?");
+		kb.requete("traumatise('A')");
+		
+		*/
+		
 	}
 }

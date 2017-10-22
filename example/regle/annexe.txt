@@ -1,6 +1,7 @@
-2
-Animal('chevre');Herbivore('chevre')
-Animal('loups');Cruel('loups')
+3
+Animal('chèvre');Herbivore('chèvre')
+Animal('loup');Cruel('loup')
+Animal('mouton');Herbivore('mouton')
 7
 Animal(x);Cruel(x);Carnivore(x)
 Animal(x);Herbivore(x);Mange(x,'herbe')

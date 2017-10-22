@@ -10,21 +10,21 @@ import java.util.ArrayList;
 public class KnowledgeBase {
 	FactBase bf;
 	ArrayList<Rule> baseRegle;
-        boolean sature;
+	boolean sature;
 
 	public KnowledgeBase(){
 		bf = null;
 		baseRegle = new ArrayList<Rule>();
-                sature = false;
+		sature = false;
 	}
 
 	public KnowledgeBase(String chemin) throws IOException{
-                sature = false;
+		sature = false;
 		baseRegle = new ArrayList<Rule>();
-		
+
 		System.out.println("Chargement du fichier : " + new java.io.File(".").getCanonicalPath() + "/" + chemin);
 		BufferedReader in = new BufferedReader(new FileReader(chemin));
-		
+
 		int nbFaits = Integer.parseInt(in.readLine());
 		String baseDeFaitStr = "";
 		for(int i = 0; i<nbFaits;i++){
@@ -71,7 +71,7 @@ public class KnowledgeBase {
 	public void ajoutRegle(String str){
 		baseRegle.add(new Rule(str));
 	}
-	
+
 	public void ajoutRegle(Rule r){
 		baseRegle.add(r);
 	}
@@ -81,30 +81,30 @@ public class KnowledgeBase {
 		while(!fin){
 			ArrayList<Atom> nouveau = new ArrayList<Atom>();
 			for(int i = 0; i < baseRegle.size();i++){
-                            Rule regle = baseRegle.get(i);
-                            if(reglePossible(regle)){
-                                Homomorphisms h = new Homomorphisms(regle.getHypRegle(), bf);
-                                // Pour chaque solution de l'homomorphisme
-                                for(int j = 0; j<h.homoQ.size();j++){
-                                    Assignation assign = h.homoQ.get(j);
+				Rule regle = baseRegle.get(i);
+				if(reglePossible(regle)){
+					Homomorphisms h = new Homomorphisms(regle.getHypRegle(), bf);
+					// Pour chaque solution de l'homomorphisme
+					for(int j = 0; j<h.homoQ.size();j++){
+						Assignation assign = h.homoQ.get(j);
 
-                                    //Constuction de la conclusion 
-                                    Atom conclusion = new Atom(regle.getConclusion());
-                                    for(int k = 0; k<conclusion.getArity();k++){
-                                        Term element = conclusion.getArgI(k);
-                                        if(element.isVariable()){
-                                           Term res = (Term) assign.get(element.getLabel());
-                                           conclusion.setArgI(k,res); // On a bien un Term :)   
-                                        }                                       
-                                    }
-                                    // Si Conclusion n'est ni dans BF ni dans new on ajout conclusion dans new
-                                    if(!bf.contains(conclusion) && !newContainConclusion(nouveau, conclusion)){
-                                        nouveau.add(conclusion);
-                                    }
+						//Constuction de la conclusion 
+						Atom conclusion = new Atom(regle.getConclusion());
+						for(int k = 0; k<conclusion.getArity();k++){
+							Term element = conclusion.getArgI(k);
+							if(element.isVariable()){
+								Term res = (Term) assign.get(element.getLabel());
+								conclusion.setArgI(k,res); // On a bien un Term :)   
+							}                                       
+						}
+						// Si Conclusion n'est ni dans BF ni dans new on ajout conclusion dans new
+						if(!bf.contains(conclusion) && !newContainConclusion(nouveau, conclusion)){
+							nouveau.add(conclusion);
+						}
 
-                                }
-                            }
-				
+					}
+				}
+
 			}
 			if(nouveau.isEmpty()){
 				fin = true;
@@ -115,29 +115,29 @@ public class KnowledgeBase {
 				}
 			}
 		}
-                sature = true;
+		sature = true;
 	}
-        
-        private boolean newContainConclusion(ArrayList<Atom> nouveau, Atom a){
-            for(int i = 0; i<nouveau.size();i++){
-                if(nouveau.get(i).equalsA(a)){
-                    return true;
-                }
-            }
-            return false;
-        }
-        
-        // Regle possible va regarder si chaque atome de l'hypothese est present en BF
-        private boolean reglePossible(Rule r){
-            ArrayList<Atom> hyp = r.getHypRegle();
-            for(int i = 0 ; i<hyp.size();i++){
-                if(bf.getAtomPred(hyp.get(i).getPredicate()) == null){
-                    return false;
-                }
-            }
-            return true;
-        }
-	
+
+	private boolean newContainConclusion(ArrayList<Atom> nouveau, Atom a){
+		for(int i = 0; i<nouveau.size();i++){
+			if(nouveau.get(i).equalsA(a)){
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// Regle possible va regarder si chaque atome de l'hypothese est present en BF
+	private boolean reglePossible(Rule r){
+		ArrayList<Atom> hyp = r.getHypRegle();
+		for(int i = 0 ; i<hyp.size();i++){
+			if(bf.getAtomPred(hyp.get(i).getPredicate()) == null){
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public String toString(){
 		String str = "Base de fait :\n" + bf.toString();
 		str += "\n\nListe des règles :";
@@ -147,23 +147,23 @@ public class KnowledgeBase {
 		}
 		return str;   
 	}
-        
-        public String requete(String str){
-            if(!sature){
-                saturerFaits();
-                System.out.println(bf);
-            }            
-            
-            System.out.println("----------------- Requete : " + str + "------------------------");
-            
-            ArrayList<Atom> Q = Homomorphisms.changeStrToListAtom(str);
-            
-            Object obj = bf.requete(Q);
-            
-            System.out.println(obj);
-            
-            //System.out.println(h);
-            // maintenant il faut s'occuper de la requete.
-            return null;
-        }
+
+	public String requete(String str){
+		if(!sature){
+			saturerFaits();
+			System.out.println(bf);
+		}            
+
+		System.out.println("----------------- Requete : " + str + "------------------------");
+
+		ArrayList<Atom> Q = Homomorphisms.changeStrToListAtom(str);
+
+		Object obj = bf.requete(Q);
+
+		System.out.println(obj);
+
+		//System.out.println(h);
+		// maintenant il faut s'occuper de la requete.
+		return null;
+	}
 }
