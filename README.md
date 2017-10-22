@@ -5,8 +5,4 @@ Ce programme permet de :
  - résoudre des problèmes à base de contrainte
  - résoudre des problèmes à base de règles
 
- exemple de fichier de règle dans le fichier example : 
-
- ```
- 
- ```
+ exemple de fichier de règle dans le dossier example.
